@@ -2,6 +2,7 @@
 
 import sys
 import csv
+# The second column can be very huge.
 csv.field_size_limit(sys.maxsize)
 
 def reducer():
@@ -13,11 +14,14 @@ def reducer():
 
     for line in reader:
         term, ref = line
+        # If the key changes
         if curterm != term:
             if curterm != None:
+                # Write all ids coma separated.
                 writer.writerow([curterm,','.join(references)])
             curterm = term
             references=[]
+        # Save current id[s]
         references.extend(ref.split(','))
 
 reducer()

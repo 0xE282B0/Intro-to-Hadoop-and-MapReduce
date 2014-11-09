@@ -10,7 +10,21 @@ def reducer():
 
     # Initialize the vatiables
     id = -1
-    user = []
+    discuss = 0
+
+
+    top = {}
+
+    # if top contains 10 elements replace the smalest value by the actual one.
+    def addTop(question,t):
+        if len(top) < 10:
+            top[question]=t
+        else:
+            m = min(top, key=top.get)
+            if top[m] < t:
+                top.pop(m, None)
+                top[question]=t;
+
 
     # As long as there are lines
     for line in reader:
@@ -18,14 +32,19 @@ def reducer():
         if id != line[0]:
             # prevent printing the initial vars and only print when key is a number
             if id != -1 and id.isdigit():
-                writer.writerow([id,user])
+                addTop(id,discuss)
             # update vars
             id = line[0]
-            user = []
+            discuss = 0
         # add user to the temp var
-        user.append(line[1])
+        if line[0] != 'question' :
+            discuss+=1
     # Last line if the Key is a number
     if id.isdigit():
-        writer.writerow([id,user])
+        addTop(id,discuss)
 
+   # Sort top 10 descending by value and write the output
+    top = sorted(top.items(), key=lambda x: (-x[1], x[0]))    
+    for key in top:
+        writer.writerow(key)
 reducer()

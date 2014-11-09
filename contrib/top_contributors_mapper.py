@@ -11,6 +11,6 @@ def mapper():
     for line in reader:
         # Use tags for questions only (remove this line to use all tags
             # Write each Tag 
-            if line[3].isdigit():
+            if line[3].isdigit() and len(line) ==19:
                 writer.writerow([line[3], line[5]])
 mapper()
